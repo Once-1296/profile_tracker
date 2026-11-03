@@ -1,0 +1,41 @@
+{
+  "status": "OK",
+  "result": [
+    {
+      "lastName": "Upadhyay",
+      "country": "India",
+      "lastOnlineTimeSeconds": 1793699033,
+      "city": "Mumbai",
+      "rating": 1785,
+      "friendOfCount": 407,
+      "titlePhoto": "https://userpic.codeforces.org/3602779/title/b1afa3ce832005dd.jpg",
+      "handle": "hewhocodes",
+      "avatar": "https://userpic.codeforces.org/3602779/avatar/cfd792c2f28b1644.jpg",
+      "firstName": "Abhay",
+      "contribution": 2,
+      "organization": "Veermata Jijabai Technological Institute",
+      "rank": "expert",
+      "maxRating": 2020,
+      "registrationTimeSeconds": 1699364702,
+      "maxRank": "candidate master"
+    },
+    {
+      "lastName": "Wadekar",
+      "country": "India",
+      "lastOnlineTimeSeconds": 1793645318,
+      "city": "Mumbai",
+      "rating": 1669,
+      "friendOfCount": 119,
+      "titlePhoto": "https://userpic.codeforces.org/4368119/title/c8ba1e9fee989c7d.jpg",
+      "handle": "Awwab_coder123",
+      "avatar": "https://userpic.codeforces.org/4368119/avatar/3e10116878c3000b.jpg",
+      "firstName": "Awwab",
+      "contribution": 0,
+      "organization": "Veermata Jijabai Technological Institute",
+      "rank": "expert",
+      "maxRating": 1772,
+      "registrationTimeSeconds": 1729778240,
+      "maxRank": "expert"
+    }
+  ]
+}
