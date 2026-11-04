@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 )
 
 type User struct {
@@ -77,8 +78,31 @@ func GetUserProfile(users []string) {
 	}
 }
 
+func cleanUser(user *User) error{
+	rawURL := user.TitlePhoto
+	// 1. Parse the URL string into a URL struct
+	u, err := url.Parse(rawURL)
+	if err != nil {
+		fmt.Printf("Error: %s\n", err)
+		return err
+	}
+
+	// 2. Modify the Host field (adds a prefix to the domain)
+	// Note: u.Host automatically preserves any existing port (e.g., ":8080")
+	u.Host = "newprefix-" + u.Host
+
+	// 3. Reconstruct the URL back to a string
+	newURL := u.String()
+
+	// fmt.Println(newURL)
+	// Output: https://newprefix-example.com:8080/path/to/page?query=1#frag
+	user.TitlePhoto = newURL
+	return nil
+}
+
 func main() {
 	BASEAPI = "https://codeforces.com/api"
 	users := []string{"Awwab_coder123", "bingo", "amalverma", "hewhocodes"}
 	GetUserProfile(users)
+
 }
