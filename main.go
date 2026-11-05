@@ -8,7 +8,7 @@ import (
 	"net/url"
 )
 
-type User struct {
+type CFUser struct {
 	FirstName  string
 	LastName   string
 	Rank       string
@@ -19,8 +19,12 @@ type User struct {
 	TitlePhoto string
 }
 
+type CFUserRequest struct {
+	Result []CFUser
+}
+
 type CFData interface {
-	User
+	CFUserRequest
 }
 
 var BASEAPI string
@@ -58,7 +62,7 @@ func GenericQuery[T CFData](methodName string, params map[string]string, data *T
 	return data, err
 }
 
-func GetUserProfile(users []string) {
+func GetUserProfile(users []string) []CFUser{
 	user_str := ""
 	for i, user := range users {
 		user_str += user
@@ -67,18 +71,20 @@ func GetUserProfile(users []string) {
 		}
 	}
 	var params map[string]string
-	var data *User
+	var data *CFUserRequest
 	params = make(map[string]string)
 	params["handles"] = user_str
 	data, err := GenericQuery("user.info", params, data)
 	if err != nil {
 		fmt.Printf("Error: %s\n", err)
+		return nil
 	} else {
-		fmt.Printf("Success in fetching profiles\n")
+		fmt.Printf("Success in fetching profiles: Example: %s\n", data.Result[0].FirstName)
+		return data.Result
 	}
 }
 
-func cleanUser(user *User) error{
+func cleanUser(user *CFUser) error{
 	rawURL := user.TitlePhoto
 	// 1. Parse the URL string into a URL struct
 	u, err := url.Parse(rawURL)
@@ -89,7 +95,7 @@ func cleanUser(user *User) error{
 
 	// 2. Modify the Host field (adds a prefix to the domain)
 	// Note: u.Host automatically preserves any existing port (e.g., ":8080")
-	u.Host = "newprefix-" + u.Host
+	u.Host = "codeforces.com/" + u.Host
 
 	// 3. Reconstruct the URL back to a string
 	newURL := u.String()
@@ -103,6 +109,8 @@ func cleanUser(user *User) error{
 func main() {
 	BASEAPI = "https://codeforces.com/api"
 	users := []string{"Awwab_coder123", "bingo", "amalverma", "hewhocodes"}
-	GetUserProfile(users)
-
+	userdetails := GetUserProfile(users)
+	for i := range len(userdetails) {
+		cleanUser(&userdetails[i])
+	}
 }
