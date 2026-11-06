@@ -113,4 +113,5 @@ func main() {
 	for i := range len(userdetails) {
 		cleanUser(&userdetails[i])
 	}
+	// add rating map
 }
