@@ -23,8 +23,22 @@ type CFUserRequest struct {
 	Result []CFUser
 }
 
+type RatingChange struct {
+	ContestId int
+	ContestName string
+	Handle string
+	Rank int
+	RatingUpdateTimeSeconds int
+	oldRating int
+	newRating int
+} 
+
+type CFUserRatingHistory struct {
+	Result []RatingChange
+}
+
 type CFData interface {
-	CFUserRequest
+	CFUserRequest | CFUserRatingHistory
 }
 
 var BASEAPI string
@@ -106,6 +120,19 @@ func cleanUser(user *CFUser) error{
 	return nil
 }
 
+func GetUserRatingChange(handle string) []RatingChange{
+	var data *CFUserRatingHistory
+	methodName := "user.rating"
+	params := make(map[string]string)
+	params["handle"] = handle
+	data, err := GenericQuery(methodName, params, data)
+	if err != nil {
+		fmt.Printf("Error: %s\n", err)
+		return nil
+	}
+	return data.Result
+}
+
 func main() {
 	BASEAPI = "https://codeforces.com/api"
 	users := []string{"Awwab_coder123", "bingo", "amalverma", "hewhocodes"}
@@ -114,4 +141,6 @@ func main() {
 		cleanUser(&userdetails[i])
 	}
 	// add rating map
+	data := GetUserRatingChange("Awwab_coder123")
+	fmt.Printf("%d", len(data))
 }
