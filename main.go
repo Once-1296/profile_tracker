@@ -115,7 +115,10 @@ func cleanUser(user *CFUser) error{
 
 	// 2. Modify the Host field (adds a prefix to the domain)
 	// Note: u.Host automatically preserves any existing port (e.g., ":8080")
-	u.Host = "codeforces.com/" + u.Host
+	
+	// fmt.Printf("%s\n%s\n", u.Host, u.Path)
+	u.Path = "/"+u.Host+u.Path
+	u.Host = "codeforces.com"
 
 	// 3. Reconstruct the URL back to a string
 	newURL := u.String()
