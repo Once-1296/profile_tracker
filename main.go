@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"os"
 )
 
 type CFUser struct {
@@ -29,8 +30,8 @@ type RatingChange struct {
 	Handle string
 	Rank int
 	RatingUpdateTimeSeconds int
-	oldRating int
-	newRating int
+	OldRating int
+	NewRating int
 } 
 
 type CFUserRatingHistory struct {
@@ -39,6 +40,11 @@ type CFUserRatingHistory struct {
 
 type CFData interface {
 	CFUserRequest | CFUserRatingHistory
+}
+
+type CFProfilePage struct {
+	Biodata CFUser
+	RatingChanges []RatingChange
 }
 
 var BASEAPI string
@@ -142,5 +148,25 @@ func main() {
 	}
 	// add rating map
 	data := GetUserRatingChange("Awwab_coder123")
-	fmt.Printf("%d", len(data))
+	// fmt.Printf("%d", len(data))
+	// 2. Convert struct to pretty-printed JSON bytes
+	saveData := CFProfilePage{
+		Biodata: userdetails[0],
+		RatingChanges: data,
+	}
+	jsonData, err := json.MarshalIndent(saveData, "", "    ")
+	if err != nil {
+		fmt.Println("Error marshaling to JSON:", err)
+		return
+	}
+
+	// 3. Write the JSON bytes to a file
+	// 0644 grants read/write permissions to the owner and read permissions to others
+	err = os.WriteFile("tmp/output.json", jsonData, 0644)
+	if err != nil {
+		fmt.Println("Error writing to file:", err)
+		return
+	}
+
+	fmt.Println("Successfully wrote struct to output.json")
 }

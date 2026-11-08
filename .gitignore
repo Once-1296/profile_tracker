@@ -10,3 +10,10 @@ wheels/
 .venv
 
 *.exe
+
+# extra folders
+tmp/
+
+# temporarily
+
+json_encoder_cpp/
